@@ -36,11 +36,11 @@ export default {
 }
 </script>
 <style scoped>
-body {
+body ,.bg-img, .section, .h-content {
   background-color: #000000; /* Black color */
   min-height: 100vh; /* 100% of the viewport height */
 }
-.bg-img, .section {
+.bg-img, .section, .h-content {
   position: relative;
   background-position: center;
   background-repeat: no-repeat;
