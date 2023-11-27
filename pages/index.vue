@@ -12,14 +12,14 @@
     <!-- 조건부 로그인 폼 -->
     <div v-if="!isLoggedIn" class="text-center mt-10">
       <form @submit.prevent="login">
-        <input type="text" placeholder="아이디" class="text-black p-2" v-model="username" />
-        <input type="password" placeholder="비밀번호" class="text-black p-2" v-model="password" />
+        <input type="text" placeholder="아이디" class="text-black p-2" v-model="userAccountID" />
+        <input type="password" placeholder="비밀번호" class="text-black p-2" v-model="userAccountPassword" />
         <button type="submit" class="bg-blue-500 text-white p-2">로그인</button>
       </form>
     </div>
 
     <!-- 로그인 후 표시 -->
-    <div v-if="isLoggedIn" class="text-center mt-10">
+    <div v-if="isLoggedIn" class="text-center text-white mt-10">
       <p>{{ username }}님</p>
       <button @click="logout" class="bg-red-500 text-white p-2">로그아웃</button>
     </div>
@@ -32,38 +32,57 @@
     </div>
   </div>
 </template>
+
 <script>
 export default {
   data() {
     return {
-      username: '',
-      password: '',
-      isLoggedIn: false,
+      userAccountID: '',
+      userAccountPassword: '',
       loginError: false // 로그인 오류 메시지 상태
     };
   },
+  computed: {
+    // Vuex 스토어 상태 참조
+    isLoggedIn() {
+      return this.$store.state.isLoggedIn;
+    },
+    username() {
+      return this.$store.state.userName;
+    },
+    userID() {
+      return this.$store.state.userData;
+    }
+  },
   methods: {
     login() {
-      // 예시 로그인 조건. 실제 프로덕션에서는 서버 통신을 통한 인증이 필요합니다.
-      if (this.username === 'user' && this.password === 'password') { // 예시 조건
-        this.isLoggedIn = true;
+      if (this.userAccountID === 'user' && this.userAccountPassword === 'password') { // 예시 조건
+        // userID,이름 조회 및 사용자 존재 여부 API 호출 통해 확인
+
         this.loginError = false;
+
+        // 로그인 상태를 Vuex 스토어에 저장합니다.
+        this.$store.dispatch('login', {
+          userData: this.userID, // 예시 userID
+          userName: 'ExampleUser' // 예시 userName
+        });
+
+        this.userAccountID = '';
+        this.userAccountPassword = '';
+
         console.log('Logged in as:', this.username);
       } else {
-        this.isLoggedIn = false;
         this.loginError = true;
         console.log('Login failed');
       }
     },
     logout() {
-      this.isLoggedIn = false;
-      this.username = '';
-      this.password = '';
-      this.loginError = false;
+      // 로그아웃 상태를 Vuex 스토어에 저장합니다.
+      this.$store.dispatch('logout');
       console.log('Logged out');
     },
     goToOrder() {
-      this.$router.push({ name: 'trading' });
+      this.$router.push({ name: 'find_item' });
       console.log('Redirecting to order page');
     },
     checkBalance() {
@@ -94,6 +113,7 @@ input[type="text"], input[type="password"] {
   border-radius: 0.25rem;
   border: 1px solid #ccc;
 }
+
 button {
   margin: 0.5rem;
   padding: 0.5rem 1rem;
