@@ -27,7 +27,7 @@ export default {
     goToOrder() {
       console.log('Redirecting to order page');
       // trading.vue로 이동
-      this.$router.push({ name: 'trading' });
+      this.$router.push({ name: 'find_item' });
     },
     checkBalance() {
       console.log('Checking balance');

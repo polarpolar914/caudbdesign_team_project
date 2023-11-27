@@ -89,13 +89,12 @@ export default {
 };
 </script>
 
-<style scoped>
+<style>
 body {
   background-color: #000000; /* Black color */
   margin: 0; /* Removes default margin */
   padding: 0; /* Removes default padding */
   min-height: 100vh; /* 100% of the viewport height */
-  background-color: #000000; /* Black color */
 }
 
 .exchange-rate-container {
@@ -174,5 +173,11 @@ button:hover {
 
 .down {
   color: blue;
+}
+@media (min-width: 768px) {
+  .exchange-rate-container {
+    width: 50%;
+    margin: 0 auto;
+  }
 }
 </style>

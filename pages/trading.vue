@@ -164,7 +164,6 @@ body {
   margin: 0; /* Removes default margin */
   padding: 0; /* Removes default padding */
   min-height: 100vh; /* 100% of the viewport height */
-  background-color: #000000; /* Black color */
 }
 
 
@@ -240,7 +239,7 @@ body {
 }
 
 /* 버튼 스타일 */
-.button, .trade-type button, .price-type button, button {
+.trade-type button, .price-type button, button {
   border: 1px solid #555555;
   background-color: #222222;
   color: #ddd;
@@ -250,7 +249,7 @@ body {
   cursor: pointer;
 }
 
-.button.active, .trade-type button.active, .price-type button.active {
+.trade-type button.active, .price-type button.active {
   background-color: #4CAF50; /* 클릭 시 색상 변경 */
 }
 
@@ -280,8 +279,7 @@ input[type='number'] {
     flex-direction: column;
   }
   .order-book, .trade-execution {
-    margin-right: 0;
-    margin-left: 0;
+    margin: 0 auto;
   }
 }
 </style>
