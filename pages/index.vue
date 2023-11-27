@@ -15,8 +15,9 @@
 
     <!-- Navigation Buttons -->
     <div class="text-center mt-5">
-      <button @click="goToOrder" class="bg-green-500 text-white p-2">주문하기</button>
-      <button @click="checkBalance" class="bg-red-500 text-white p-2">잔고 확인</button>
+      <button @click="goToOrder" class="bg-red-500 text-white p-2">주문하기</button>
+      <button @click="checkBalance" class="bg-green-500 text-white p-2">잔고 확인</button>
+      <button @click="checkExchangeRate" class="bg-blue-500 text-white p-2">환율 확인</button>
     </div>
   </div>
 </template>
@@ -26,11 +27,15 @@ export default {
     goToOrder() {
       console.log('Redirecting to order page');
       // trading.vue로 이동
-      this.$router.push({ name: 'trading' }); // 또는 적절한 라우트 이름으로 변경
+      this.$router.push({ name: 'trading' });
     },
     checkBalance() {
       console.log('Checking balance');
-      // 잔고 확인 로직 추가
+      this.$router.push({ name: 'balance' });
+    },
+    checkExchangeRate() {
+      console.log('Checking exchange rate');
+      this.$router.push({ name: 'exchange_rate' });
     }
   }
 }
