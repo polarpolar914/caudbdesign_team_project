@@ -163,8 +163,6 @@ body {
   background-color: #000000; /* Black color */
   margin: 0; /* Removes default margin */
   padding: 0; /* Removes default padding */
-}
-body, .section {
   min-height: 100vh; /* 100% of the viewport height */
   background-color: #000000; /* Black color */
 }
