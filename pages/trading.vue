@@ -1,6 +1,11 @@
 <template>
   <div id="app">
     <div class="content-wrapper">
+      <!-- 종목명, 현재가 -->
+      <div class="stock-info">
+        <h2>{{itemName}}({{ itemID }})</h2>
+        <p>현재가격: {{ currentPrice }}원</p>
+      </div>
       <!-- 호가창 -->
       <div class="order-book">
         <div class="price-level" v-for="level in fullOrderBook" :key="level.price" :class="{'upper-limit': level.price === upperLimit, 'lower-limit': level.price === lowerLimit}">
@@ -108,8 +113,15 @@ export default {
       availableShares: 0, // 사용자가 구매할 수 있는 주식 수
       totalPrice: 0, // 원래 계산된 총 주문 금액
       currentPrice: 114000, // 현재 가격
-      desiredPrice: null // 희망 가격
+      desiredPrice: null, // 희망 가격
+      itemName: "null", // 종목명
+      itemID: 0, // 종목 ID
     };
+  },
+  created() {
+    // URL 쿼리 파라미터에서 itemId 값을 추출하여 itemID에 할당
+    this.itemID = this.$route.query.itemId || this.itemID;
+    // API 호출 로직 - 종목명, 현재가
   },
   computed: {
     roundedTotalPrice() {
@@ -117,6 +129,9 @@ export default {
     }
   },
   methods: {
+    fetchItemInfo() {
+      // 종목 정보 가져오기 로직 (여기에 백엔드 통신 코드 작성)
+    },
     fetchOrderBook() {
       // 호가 정보 가져오기 로직 (여기에 백엔드 통신 코드 작성)
     },
@@ -271,6 +286,24 @@ input[type='number'] {
   padding: 10px;
   margin: 10px 0;
   border-radius: 5px;
+}
+
+/* 종목 정보 스타일 */
+.stock-info {
+  color: #ffffff;
+  text-align: center;
+  margin-bottom: 20px;
+}
+
+.stock-info h2 {
+  margin: 0;
+  padding: 0;
+  font-size: 24px;
+}
+
+.stock-info p {
+  margin: 0;
+  font-size: 18px;
 }
 
 /* 반응형 디자인 조정 */
