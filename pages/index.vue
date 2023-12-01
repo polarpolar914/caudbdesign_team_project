@@ -19,8 +19,8 @@
     </div>
 
     <!-- 로그인 후 표시 -->
-    <div v-if="isLoggedIn" class="text-center text-white mt-10">
-      <p>{{ username }}님</p>
+    <div v-if="isLoggedIn" class="text-center text-white mt- 10">
+      <p>안녕하세요, {{username}}님</p>
       <button @click="logout" class="bg-red-500 text-white p-2">로그아웃</button>
     </div>
 
@@ -39,7 +39,7 @@ export default {
     return {
       userAccountID: '',
       userAccountPassword: '',
-      loginError: false // 로그인 오류 메시지 상태
+      loginError: false, // 로그인 오류 메시지 상태
     };
   },
   computed: {
@@ -55,26 +55,46 @@ export default {
     }
   },
   methods: {
-    login() {
-      if (this.userAccountID === 'user' && this.userAccountPassword === 'password') { // 예시 조건
-        // userID,이름 조회 및 사용자 존재 여부 API 호출 통해 확인
+    async login() {
+      const axiosModule = await import('axios');
+      const axios = axiosModule.default;
 
-        this.loginError = false;
-
-        // 로그인 상태를 Vuex 스토어에 저장합니다.
-        this.$store.dispatch('login', {
-          userData: this.userID, // 예시 userID
-          userName: 'ExampleUser' // 예시 userName
+      try {
+        const response = await axios.post('https://dbspring.dongwoo.win/api/login', {
+          id: this.userAccountID,
+          password_hash: this.userAccountPassword
+        }, {
+          headers: {
+            'Content-Type': 'application/json'
+          }
         });
 
-        this.userAccountID = '';
-        this.userAccountPassword = '';
+        // 응답 처리
+        const userData = response.data;
+        // API 응답 예시
+        // Login response: {uid: 1, username: 'admin', usertype: 'personal', account_status: 'active', created_at: '2019-01-01T00:00:00.000+00:00'}
 
-        console.log('Logged in as:', this.username);
-      } else {
+        if (userData.account_status === 'active') { // API 응답에서 성공 여부를 확인하는 조건
+          // 로그인 처리
+          this.loginError = false;
+          this.$store.dispatch('login', {
+            userData: userData.userData, // API 응답에서 사용자 데이터 사용
+            userName: userData.username
+          });
+
+          this.userAccountID = '';
+          this.userAccountPassword = '';
+          console.log('Logged in as:', userData.username);
+        } else {
+          this.loginError = true;
+          console.log('Login failed:', userData.message);
+        }
+      } catch (error) {
+        // 에러 처리
         this.loginError = true;
-        console.log('Login failed');
+        console.error('Login error:', error);
       }
+
     },
     logout() {
       // 로그아웃 상태를 Vuex 스토어에 저장합니다.
@@ -125,3 +145,4 @@ button:hover {
   opacity: 0.9;
 }
 </style>
+
